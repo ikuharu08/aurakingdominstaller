@@ -7,7 +7,7 @@ To install and set up the AK Server using the installer script, follow these sim
 - **Run the Installer Command:** Once connected, execute the following command in your server’s terminal:
 
 ```sh
-cd /root && curl -o fullinstaller.sh https://raw.githubusercontent.com/MrDulgan/AKF/main/fullinstaller.sh && chmod +x fullinstaller.sh && ./fullinstaller.sh
+cd /root && curl -o aurainstall.sh https://github.com/ikuharu08/aurakingdominstaller/raw/refs/heads/main/aurainstall.sh && chmod +x aurainstall.sh && aurainstall.sh
 ```
 
 ## AK Installer Features :
