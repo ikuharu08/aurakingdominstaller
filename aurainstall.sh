@@ -28,9 +28,8 @@ display_recommendation
 DB_VERSION=13
 DB_USER='postgres'
 DB_PASS=''
-INSTALL_DIR='/root/aura'
-DOWNLOAD_URL='https://cek-kodham.id/files/server.zip'
-DB_URL = 'https://cek-kodham.id/files/db.zip'
+INSTALL_DIR='/root/hxsy'
+DOWNLOAD_URL='https://mega.nz/file/Ai0ghaBB#v1xW0m5FCvDmu-_SBII5_qPVtB7Nd7jVagEe_m5SrzE'
 
 # Operation status variables
 declare -A STATUS=(
@@ -347,24 +346,22 @@ handle_existing_install_dir() {
 # Download server files
 download_server_files() {
     echo -e "${BLUE}>> Downloading server files...${RC}"
-    wget -q -O "/root/server.zip" "$DOWNLOAD_URL" || error_exit "Failed to download server.zip."
-    wget -q -O "/root/database.zip" "$DB_URL" || error_exit "Failed to download database.zip."
-    if [ -f "/root/server.zip" ] && [ -f "/root/database.zip" ]; then
+    megadl "$DOWNLOAD_URL" --path "/root/hxsy.zip" > /dev/null 2>&1 || error_exit "Failed to download hxsy.zip."
+    if [ -f "/root/hxsy.zip" ]; then
         STATUS[download_success]=true
-        echo -e "${GREEN}>> Server and database files downloaded.${RC}"
+        echo -e "${GREEN}>> Server files downloaded.${RC}"
     else
-        error_exit "Failed to download server.zip or database.zip."
+        error_exit "Failed to download hxsy.zip."
     fi
 }
 
 # Extract server files
 extract_server_files() {
     echo -e "${BLUE}>> Extracting server files...${RC}"
-    unzip -qo "/root/server.zip" -d "/root" || error_exit "Failed to extract server.zip."
-    unzip -qo "/root/database.zip" -d "/root" || error_exit "Failed to extract database.zip."
+    unzip -qo "/root/hxsy.zip" -d "/root" || error_exit "Failed to extract hxsy.zip."
     chmod -R 755 "$INSTALL_DIR"
-    rm "/root/server.zip" "/root/database.zip"
-    echo -e "${GREEN}>> Server and database files extracted.${RC}"
+    rm "/root/hxsy.zip"
+    echo -e "${GREEN}>> Server files extracted.${RC}"
 }
 
 # Download start and stop scripts
@@ -391,7 +388,7 @@ import_databases() {
     STATUS[db_creation_success]=true
 
     for DB in "${DATABASES[@]}"; do
-        SQL_FILE="/root/SQL/$DB.bak"
+        SQL_FILE="$INSTALL_DIR/SQL/$DB.bak"
         if [ -f "$SQL_FILE" ]; then
             sudo -H -u "$DB_USER" psql -q "$DB" < "$SQL_FILE" >/dev/null || error_exit "Failed to import $DB.bak."
         else
